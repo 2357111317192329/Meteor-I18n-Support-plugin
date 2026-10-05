@@ -18,13 +18,12 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.PostInit;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import org.slf4j.Logger;
 
 import java.util.Map;
@@ -59,21 +58,16 @@ public class TranslateAddon extends MeteorAddon {
             reloadTranslations("CLIENT_STARTED", mc);
         });
 
-        // 注册资源重载监听器 —— /reload 或 F3+T 时回调
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(
-            new SimpleSynchronousResourceReloadListener() {
-                @Override
-                public Identifier getFabricId() { return Identifier.fromNamespaceAndPath("meteor-i18n-addon", "reload"); }
-
-                @Override
-                public void onResourceManagerReload(ResourceManager manager) {
-                    LOG.info("[MeteorTranslation] === Resource reload (/reload or F3+T) ===");
-                    LOG.info("[MeteorTranslation] manager={}", manager != null ? "OK" : "NULL");
-                    if (manager != null) {
-                        TRANSLATOR.reload(manager);
-                        LanguageRefresh.applyAll();
-                        LOG.info("[MeteorTranslation] Resource reload done");
-                    }
+        // 注册资源重载监听器 —— /reload 或 F3+T 时回调（fabric-resource-loader-api-v1）
+        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(
+            Identifier.fromNamespaceAndPath("meteor-i18n-addon", "reload"),
+            (ResourceManagerReloadListener) manager -> {
+                LOG.info("[MeteorTranslation] === Resource reload (/reload or F3+T) ===");
+                LOG.info("[MeteorTranslation] manager={}", manager != null ? "OK" : "NULL");
+                if (manager != null) {
+                    TRANSLATOR.reload(manager);
+                    LanguageRefresh.applyAll();
+                    LOG.info("[MeteorTranslation] Resource reload done");
                 }
             });
 

@@ -9,7 +9,6 @@ base {
 }
 
 repositories {
-    mavenLocal()
     maven {
         name = "Fabric"
         url = uri("https://maven.fabricmc.net/")

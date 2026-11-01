@@ -67,7 +67,7 @@ public class JsonDump {
         dump2Set(engine, engine2);
 
         if (entMap.isEmpty()) {
-            LOGGER.info("[MeteorTranslation] 无翻译数据可导出，跳过 (lang 文件 {})", dumpPath());
+            LOGGER.info("[MeteorTranslation] No translations to export, skipping (lang file {})", dumpPath());
             entMap.clear();
             return 0;
         }
@@ -76,9 +76,9 @@ public class JsonDump {
             File path = new File(dumpPath());
             File parent = path.getParentFile();
             if (parent != null && !parent.exists() && !parent.mkdirs()) {
-                LOGGER.error("[MeteorTranslation] 导出失败：无法创建导出目录 {}", parent);
+                LOGGER.error("[MeteorTranslation] Export failed: cannot create export directory {}", parent);
                 entMap.clear();
-                throw new RuntimeException("无法创建导出目录 " + parent);
+                throw new RuntimeException("Cannot create export directory " + parent);
             }
             if (path.exists() || path.createNewFile()) {
 
@@ -98,15 +98,15 @@ public class JsonDump {
                 dumpBW.close();
 
                 int count = entMap.size();
-                LOGGER.info("[MeteorTranslation] 已导出 {} 条翻译到 lang 文件 {} (作为 json: true)", count, dumpPath());
+                LOGGER.info("[MeteorTranslation] Exported {} translations to lang file {} (as json: true)", count, dumpPath());
                 entMap.clear();
                 return count;
             } else {
                 entMap.clear();
-                throw new RuntimeException("无法创建导出文件 " + path);
+                throw new RuntimeException("Cannot create export file " + path);
             }
         } catch (IOException e) {
-            LOGGER.error("[MeteorTranslation] 导出 lang 文件 {} 失败: {}", dumpPath(), e.getMessage());
+            LOGGER.error("[MeteorTranslation] Failed to export lang file {}: {}", dumpPath(), e.getMessage());
             entMap.clear();
             throw new RuntimeException(e);
         } finally {

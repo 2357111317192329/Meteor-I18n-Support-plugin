@@ -22,7 +22,7 @@ return engines.keySet();
 public AbstractTransEngine getEngine(String name) {
 AbstractTransEngine engine = engines.get(name);
 if (engine == null) {
-LOG.warn("[EngineManager] 未知翻译引擎 {}，回退到 {}（若配置文件残留旧值，可在模块设置中改为 {}）",
+LOG.warn("[EngineManager] Unknown translation engine {}, falling back to {} (if the config file has a stale value, change it to {} in the module settings)",
 name, FALLBACK_ENGINE, engines.keySet());
 return engines.get(FALLBACK_ENGINE);
 }

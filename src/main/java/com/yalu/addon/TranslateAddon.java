@@ -421,9 +421,9 @@ public class TranslateAddon extends MeteorAddon {
     private static void deleteOldLangJson() {
         try {
             boolean deleted = java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get("lang.json"));
-            if (deleted) LOG.info("[MeteorTranslation] 已删除旧的 lang.json");
+            if (deleted) LOG.info("[MeteorTranslation] Deleted old lang.json");
         } catch (java.io.IOException e) {
-            LOG.warn("[MeteorTranslation] 删除旧的 lang.json 失败: {}", e.toString());
+            LOG.warn("[MeteorTranslation] Failed to delete old lang.json: {}", e.toString());
         }
     }
 

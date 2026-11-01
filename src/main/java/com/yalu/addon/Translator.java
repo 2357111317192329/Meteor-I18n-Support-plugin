@@ -59,12 +59,12 @@ public class Translator {
         }else{
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             langJson.addProperty(key,name);
-            LOGGER.info("[MeteorTranslation] 未翻译键已写入 lang.json: {}", key);
+            LOGGER.info("[MeteorTranslation] Missing key written to lang.json: {}", key);
             Path path = Paths.get("lang.json");
             try (BufferedWriter writer = Files.newBufferedWriter(path)) {
                 gson.toJson(langJson, writer);
             } catch (IOException e) {
-                LOGGER.error("[MeteorTranslation] 写入 lang.json 失败: {}", e.toString());
+                LOGGER.error("[MeteorTranslation] Failed to write lang.json: {}", e.toString());
             }
         }
         return name;
